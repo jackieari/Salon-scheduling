@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Luxe Salon – Book Appointment</title>
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-brand">Luxe Salon</a>
+    <a href="/">Home</a>
+    <a href="/slots">Book Appointment</a>
+    <a href="/provider">Provider Dashboard</a>
+</nav>
+
+<div class="container">
+
+    <div class="page-title">
+        <h1>Book Appointment</h1>
+        <p>Confirm your details to reserve the selected slot.</p>
+    </div>
+
+    <div class="alert alert-error" th:if="${error}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <span th:text="${error}"></span>
+    </div>
+
+    <div class="slot-info" th:if="${slot}">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        <span>
+            <strong th:text="${slot.slotDate}"></strong>
+            &nbsp;&middot;&nbsp;
+            <span th:text="${slot.startTime}"></span>
+            &nbsp;&middot;&nbsp;
+            <span th:text="${slot.stylistName}"></span>
+            &nbsp;&middot;&nbsp;
+            <span th:text="${slot.service}"></span>
+        </span>
+    </div>
+
+    <div class="form-card">
+        <form th:action="@{/book}" th:object="${appointment}" method="post">
+            <input type="hidden" th:field="*{slotId}"/>
+
+            <div class="form-group">
+                <label for="customerName">Full Name</label>
+                <input type="text" id="customerName" th:field="*{customerName}" placeholder="Jane Smith" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="customerEmail">Email Address</label>
+                <input type="email" id="customerEmail" th:field="*{customerEmail}" placeholder="jane@example.com" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="customerPhone">Phone Number</label>
+                <input type="tel" id="customerPhone" th:field="*{customerPhone}" placeholder="(408) 555-0100" required/>
+            </div>
+
+            <hr class="divider"/>
+
+            <div class="actions">
+                <button type="submit" class="btn btn-primary">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Confirm Booking
+                </button>
+                <a href="/slots" class="btn btn-outline">Back to Slots</a>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

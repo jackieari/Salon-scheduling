@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Luxe Salon – Provider Dashboard</title>
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-brand">Luxe Salon</a>
+    <a href="/">Home</a>
+    <a href="/slots">Book Appointment</a>
+    <a href="/provider">Provider Dashboard</a>
+    <a href="/provider/logout" style="margin-left:auto;color:rgba(255,255,255,.4);">Log out</a>
+</nav>
+
+<div class="container">
+
+    <div class="page-title">
+        <h1>Provider Dashboard</h1>
+        <p>Manage availability and view all booked appointments.</p>
+    </div>
+
+    <!-- Appointments -->
+    <div class="section-label">Booked Appointments</div>
+
+    <div class="empty" th:if="${#lists.isEmpty(appointments)}">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+        <p>No appointments have been booked yet.</p>
+    </div>
+
+    <div class="table-wrap" th:unless="${#lists.isEmpty(appointments)}">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Customer</th>
+                    <th>Email</th>
+                    <th>Stylist</th>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="appt : ${appointments}">
+                    <td th:text="${appt.appointmentId}"></td>
+                    <td th:text="${appt.customerName}"></td>
+                    <td th:text="${appt.customerEmail}"></td>
+                    <td th:text="${appt.stylistName}"></td>
+                    <td th:text="${appt.service}"></td>
+                    <td th:text="${appt.slotDate}"></td>
+                    <td th:text="${appt.startTime}"></td>
+                    <td>
+                        <form th:action="@{/provider/cancel/{id}(id=${appt.appointmentId})}" method="post">
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="return confirm('Cancel this appointment?')">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                                Cancel
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Slots -->
+    <div class="section-label">Availability Slots</div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Stylist</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Service</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="slot : ${slots}">
+                    <td th:text="${slot.slotId}"></td>
+                    <td th:text="${slot.stylistName}"></td>
+                    <td th:text="${slot.slotDate}"></td>
+                    <td th:text="${slot.startTime}"></td>
+                    <td th:text="${slot.service}"></td>
+                    <td>
+                        <span th:if="${!slot.blocked}" class="badge badge-available">
+                            <span class="badge-dot"></span>Available
+                        </span>
+                        <span th:if="${slot.blocked}" class="badge badge-booked">
+                            <span class="badge-dot"></span>Booked
+                        </span>
+                    </td>
+                    <td>
+                        <form th:action="@{/provider/slots/{id}/delete(id=${slot.slotId})}" method="post">
+                            <button type="submit" class="btn btn-ghost btn-sm"
+                                    onclick="return confirm('Delete this slot?')">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"/>
+                                    <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                                    <path d="M10 11v6"/><path d="M14 11v6"/>
+                                    <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+                                </svg>
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add Slot -->
+    <div class="section-label">Add New Slot</div>
+
+    <div class="form-card">
+        <form th:action="@{/provider/slots}" th:object="${newSlot}" method="post">
+
+            <div class="form-group">
+                <label>Stylist Name</label>
+                <input type="text" th:field="*{stylistName}" placeholder="e.g. Maria Lopez" required/>
+            </div>
+
+            <div class="form-group">
+                <label>Date</label>
+                <input type="text" th:field="*{slotDate}" placeholder="e.g. 2026-04-10" required/>
+            </div>
+
+            <div class="form-group">
+                <label>Time</label>
+                <input type="text" th:field="*{startTime}" placeholder="e.g. 10:00 AM" required/>
+            </div>
+
+            <div class="form-group">
+                <label>Service</label>
+                <select th:field="*{service}">
+                    <option value="Haircut">Haircut</option>
+                    <option value="Color">Color</option>
+                    <option value="Blowout">Blowout</option>
+                </select>
+            </div>
+
+            <hr class="divider"/>
+
+            <button type="submit" class="btn btn-primary">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Add Slot
+            </button>
+
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

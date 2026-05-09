@@ -1,0 +1,23 @@
+# Compiled
+target/
+*.class
+
+# Database
+*.db
+*.db-shm
+*.db-wal
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+cookies.txt
+
+# Logs
+*.log

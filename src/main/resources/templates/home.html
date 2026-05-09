@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Luxe Salon</title>
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-brand">Luxe Salon</a>
+    <a href="/">Home</a>
+    <a href="/slots">Book Appointment</a>
+    <a href="/provider">Provider Dashboard</a>
+</nav>
+
+<div class="hero">
+    <h1><em>Luxe</em> Salon</h1>
+    <p>Browse available appointments with our expert stylists and book in seconds.</p>
+    <a href="/slots" class="btn btn-accent">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        View Available Slots
+    </a>
+</div>
+
+<div class="container">
+
+    <div class="section-label">Services</div>
+    <div class="card-grid">
+        <div class="feat-card">
+            <div class="feat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+                    <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+                    <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+                    <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+                </svg>
+            </div>
+            <h3>Haircut</h3>
+            <p>Precision cuts tailored to your style and face shape.</p>
+        </div>
+        <div class="feat-card">
+            <div class="feat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                </svg>
+            </div>
+            <h3>Color</h3>
+            <p>Full color, highlights, and balayage by color specialists.</p>
+        </div>
+        <div class="feat-card">
+            <div class="feat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>
+                </svg>
+            </div>
+            <h3>Blowout</h3>
+            <p>Smooth, salon-quality blowouts for any occasion.</p>
+        </div>
+    </div>
+
+    <div class="section-label">Our Stylists</div>
+    <div class="card-grid">
+        <div class="feat-card">
+            <div class="feat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+            </div>
+            <h3>Maria Lopez</h3>
+            <p>Color specialist with 10+ years of experience.</p>
+        </div>
+        <div class="feat-card">
+            <div class="feat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+            </div>
+            <h3>James Kim</h3>
+            <p>Precision cutting and men's grooming expert.</p>
+        </div>
+        <div class="feat-card">
+            <div class="feat-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+            </div>
+            <h3>Sofia Reyes</h3>
+            <p>Blowout and styling specialist for all hair types.</p>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

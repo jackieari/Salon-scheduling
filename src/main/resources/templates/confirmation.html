@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Luxe Salon – Booking Confirmed</title>
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+</head>
+<body>
+
+<nav>
+    <a href="/" class="nav-brand">Luxe Salon</a>
+    <a href="/">Home</a>
+    <a href="/slots">Book Appointment</a>
+    <a href="/provider">Provider Dashboard</a>
+</nav>
+
+<div class="container">
+
+    <div class="confirm-wrap">
+
+        <div class="confirm-top">
+            <div class="confirm-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </div>
+            <h1>Booking Confirmed</h1>
+            <p>Confirmation #<span th:text="${appointment.appointmentId}"></span></p>
+        </div>
+
+        <div class="confirm-body">
+            <table>
+                <tbody>
+                    <tr><td>Customer</td><td th:text="${appointment.customerName}"></td></tr>
+                    <tr><td>Email</td>   <td th:text="${appointment.customerEmail}"></td></tr>
+                    <tr><td>Phone</td>   <td th:text="${appointment.customerPhone}"></td></tr>
+                    <tr><td>Service</td> <td th:text="${appointment.service}"></td></tr>
+                    <tr><td>Stylist</td> <td th:text="${appointment.stylistName}"></td></tr>
+                    <tr><td>Date</td>    <td th:text="${appointment.slotDate}"></td></tr>
+                    <tr><td>Time</td>    <td th:text="${appointment.startTime}"></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <div class="actions">
+        <a href="/slots" class="btn btn-primary">Book Another</a>
+        <a href="/" class="btn btn-outline">Home</a>
+        <button class="btn btn-accent" id="syncBtn"
+                th:onclick="'syncCalendar(' + ${appointment.appointmentId} + ')'">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"/>
+                <polyline points="1 20 1 14 7 14"/>
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+            Sync to Calendar
+        </button>
+        <form th:action="@{/cancel/{id}(id=${appointment.appointmentId})}" method="post" style="display:inline">
+            <button type="submit" class="btn btn-danger"
+                    onclick="return confirm('Cancel this appointment?')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+                Cancel Appointment
+            </button>
+        </form>
+    </div>
+
+    <div id="syncResult" style="display:none; max-width:520px; margin-top:16px;">
+        <div style="background:var(--blue-light); border:1px solid var(--blue-border); border-left:3px solid var(--blue);
+                    border-radius:var(--r-sm); padding:14px 18px; font-size:14px; color:var(--ink-2);">
+            <div style="font-weight:700; color:var(--ink); margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Calendar Synced
+            </div>
+            <div style="display:grid; grid-template-columns:90px 1fr; gap:5px 12px; font-size:13px;">
+                <span style="color:var(--muted); font-weight:600; text-transform:uppercase; font-size:11px; letter-spacing:.5px; padding-top:2px;">Event ID</span>
+                <span id="syncEventId"></span>
+                <span style="color:var(--muted); font-weight:600; text-transform:uppercase; font-size:11px; letter-spacing:.5px; padding-top:2px;">Status</span>
+                <span id="syncStatus"></span>
+                <span style="color:var(--muted); font-weight:600; text-transform:uppercase; font-size:11px; letter-spacing:.5px; padding-top:2px;">Message</span>
+                <span id="syncMessage"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function syncCalendar(appointmentId) {
+            var btn = document.getElementById('syncBtn');
+            btn.disabled = true;
+            fetch('/api/calendar/sync/' + appointmentId, { method: 'POST' })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    document.getElementById('syncEventId').textContent  = data.eventId;
+                    document.getElementById('syncStatus').textContent   = data.status;
+                    document.getElementById('syncMessage').textContent  = data.message;
+                    document.getElementById('syncResult').style.display = 'block';
+                    btn.style.display = 'none';
+                });
+        }
+    </script>
+
+</div>
+
+</body>
+</html>
